@@ -1,48 +1,29 @@
 import { useState } from "react";
 import Head from "next/head";
-import { Todo } from "@/types/todo";
 import { generateUniqueId } from "@/utils/generateUniqueId";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
 import TodoList from "@/components/organisms/TodoList";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store';
+import { addTodo, toggleTodo, deleteTodo, editTodo } from '@/store/todoSlice';
 
 export default function Home() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const todos = useSelector((state: RootState) => state.todos);
   const [text, setText] = useState("");
+  const dispatch = useDispatch();
 
-  const addTodo = () => {
+  const handleAdd = () => {
     if (!text.trim()) return;
-    const newTodo: Todo = {
-      id: generateUniqueId(),
-      text,
-      completed: false,
-    };
-    setTodos([newTodo, ...todos]);
-    setText("");
+    dispatch(addTodo({ id: generateUniqueId(), text, completed: false }));
+    setText('');
   };
 
-  const toggleTodo = (id: string) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const onEdit = (id: string) => {
+  const handleEdit = (id: string) => {
     const editedTxt = prompt('Edit the todo:');
-
     if (editedTxt !== null && editedTxt.trim() !== '') {
-      setTodos((prev) =>
-        prev.map((todo) =>
-          todo.id === id ? { ...todo, text: editedTxt } : todo
-        )
-      );
-    };
-  }
-
-  const deleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+      dispatch(editTodo({ id, text: editedTxt }));
+    }
   };
 
   return (
@@ -55,14 +36,14 @@ export default function Home() {
         <div className="flex gap-2">
           <Input value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter task..." onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              addTodo();
+              handleAdd();
             }
           }} />
-          <Button className="bg-green-500 hover:bg-green-600" onClick={addTodo}>
+          <Button className="bg-green-500 hover:bg-green-600" onClick={handleAdd}>
             Add
           </Button>
         </div>
-        <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onEdit={onEdit} />
+        <TodoList todos={todos} onToggle={(id) => dispatch(toggleTodo(id))} onDelete={(id) => dispatch(deleteTodo(id))} onEdit={handleEdit} />
       </main>
     </>
   );
