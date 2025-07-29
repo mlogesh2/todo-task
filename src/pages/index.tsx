@@ -32,14 +32,14 @@ export default function Home() {
         <title>Todo App</title>
       </Head>
       <main className="max-w-xl mx-auto mt-10 px-4">
-        <h1 className="text-3xl font-bold text-center mb-6">Todo App</h1>
+        <h1 data-wow-duration={"1s"} className="wow animate__fadeInDown text-3xl font-bold text-center mb-6">Todo App</h1>
         <div className="flex gap-2">
           <Input value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter task..." onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleAdd();
             }
           }} />
-          <Button className="bg-green-500 hover:bg-green-600" onClick={handleAdd}>
+          <Button data-wow-duration={"1s"} className="wow animate__fadeIn bg-green-500 hover:bg-green-600" onClick={handleAdd}>
             Add
           </Button>
         </div>

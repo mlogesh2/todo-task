@@ -14,7 +14,8 @@ const Input: React.FC<InputProps> = ({ value, onChange, placeholder, onKeyDown }
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        className="border border-gray-300 rounded px-3 py-2 w-full"
+        data-wow-duration={"1s"}
+        className="wow animate__fadeIn border border-gray-300 rounded px-3 py-2 w-full"
     />
 );
 
