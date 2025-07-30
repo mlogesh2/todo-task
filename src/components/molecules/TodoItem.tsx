@@ -10,10 +10,10 @@ interface Props {
 }
 
 const TodoItem: React.FC<Props> = ({ todo, onToggle, onEdit, onDelete }) => (
-    <div data-wow-duration={"1s"} className="wow animate__bounceInDown flex items-center justify-between p-2 border-b">
+    <div data-wow-duration={"1s"} className="wow animate__bounceInDown flex items-center justify-between p-2 border-b border-gray-950/20">
         <div
             onClick={onToggle}
-            className={`cursor-pointer flex-1 ${todo.completed ? "line-through text-gray-400" : ""}`}
+            className={`cursor-pointer flex-1 ${todo.completed ? "line-through text-gray-400 px-2" : ""}`}
         >
             {todo.text}
         </div>
