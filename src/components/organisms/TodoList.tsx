@@ -10,7 +10,7 @@ interface Props {
 }
 
 const TodoList: React.FC<Props> = ({ todos, onToggle, onEdit, onDelete }) => (
-    <div data-wow-duration={"1s"} className="mt-4 border border-gray-950/20 rounded wow animate__bounceInDown shadow-md">
+    <div data-wow-duration={"1s"} className="mt-4 border border-gray-950/20 rounded wow animate__bounceInDown shadow-md min-w-[350px]">
         {todos.map((todo) => (
             <TodoItem
                 key={todo.id}
