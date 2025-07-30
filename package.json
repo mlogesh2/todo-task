@@ -2,6 +2,7 @@
   "name": "todo-task",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/mlogesh2/todo-task",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
