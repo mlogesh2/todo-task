@@ -1,3 +1,5 @@
+// store/todoSlice.ts
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Todo {
@@ -6,28 +8,49 @@ export interface Todo {
     completed: boolean;
 }
 
-const initialState: Todo[] = [];
+export interface TodoBoard {
+    id: string;
+    todos: Todo[];
+}
+
+const initialState: TodoBoard[] = [];
 
 const todoSlice = createSlice({
-    name: 'todos',
+    name: 'todoBoards',
     initialState,
     reducers: {
-        addTodo: (state, action: PayloadAction<Todo>) => {
-            state.unshift(action.payload);
+        addBoard: (state, action: PayloadAction<{ id: string }>) => {
+            state.push({ id: action.payload.id, todos: [] });
         },
-        toggleTodo: (state, action: PayloadAction<string>) => {
-            const todo = state.find((t) => t.id === action.payload);
-            if (todo) todo.completed = !todo.completed;
+        addTodo: (state, action: PayloadAction<{ boardId: string; todo: Todo }>) => {
+            const board = state.find(b => b.id === action.payload.boardId);
+            if (board) board.todos.unshift(action.payload.todo);
         },
-        editTodo: (state, action: PayloadAction<{ id: string; text: string }>) => {
-            const todo = state.find((t) => t.id === action.payload.id);
-            if (todo) todo.text = action.payload.text;
+        toggleTodo: (state, action: PayloadAction<{ boardId: string; id: string }>) => {
+            const board = state.find(b => b.id === action.payload.boardId);
+            if (board) {
+                const todo = board.todos.find(t => t.id === action.payload.id);
+                if (todo) todo.completed = !todo.completed;
+            }
         },
-        deleteTodo: (state, action: PayloadAction<string>) => {
-            return state.filter((todo) => todo.id !== action.payload);
+        editTodo: (state, action: PayloadAction<{ boardId: string; id: string; text: string }>) => {
+            const board = state.find(b => b.id === action.payload.boardId);
+            if (board) {
+                const todo = board.todos.find(t => t.id === action.payload.id);
+                if (todo) todo.text = action.payload.text;
+            }
+        },
+        deleteTodo: (state, action: PayloadAction<{ boardId: string; id: string }>) => {
+            const board = state.find(b => b.id === action.payload.boardId);
+            if (board) {
+                board.todos = board.todos.filter(t => t.id !== action.payload.id);
+            }
+        },
+        deleteBoard: (state, action: PayloadAction<{ boardId: string }>) => {
+            return state.filter(board => board.id !== action.payload.boardId);
         },
     },
 });
 
-export const { addTodo, toggleTodo, editTodo, deleteTodo } = todoSlice.actions;
+export const { addBoard, addTodo, toggleTodo, editTodo, deleteTodo, deleteBoard } = todoSlice.actions;
 export default todoSlice.reducer;
