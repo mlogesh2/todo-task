@@ -18,10 +18,7 @@ const TodoList: React.FC<Props> = ({ boardId, todos, onToggle }) => {
     const [text, setText] = useState("");
     const dispatch = useDispatch();
 
-    console.log("boardId", boardId, todos);
-
     const handleAdd = () => {
-        console.log("handle add", text);
         if (!text.trim()) return;
         dispatch(addTodo({
             boardId,
@@ -49,14 +46,13 @@ const TodoList: React.FC<Props> = ({ boardId, todos, onToggle }) => {
         dispatch(deleteBoard({ boardId }));
     };
 
-    console.log("todos", todos);
-
 
     return (
         <div
             data-wow-duration={"1s"}
             className="mt-4 border border-gray-950/20 rounded wow animate__bounceInDown shadow-md min-w-[350px] bg-yellow-100 p-2"
         >
+            <div className="float-end cursor-pointer" onClick={onDeleteBoard}>x</div>
             <div className="flex max-w-2xl w-full gap-2 p-2">
                 <Input
                     value={text}
